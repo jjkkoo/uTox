@@ -56,7 +56,7 @@ START_TEST(test_chrono_target)
         yieldcpu(1);
     }
 
-    ck_assert_msg((intptr_t)info.ptr == 30, "Expected 30 got: %u", info.ptr);
+    ck_assert_msg(info.ptr == 30, "Expected 30 got: %u", info.ptr);
 }
 END_TEST
 

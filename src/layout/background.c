@@ -65,7 +65,7 @@ panel_root = {
     .drawfunc = draw_background,
     .disabled = 0,
     .child = (PANEL*[]) {
-        &panel_side_bar,
+        // &panel_side_bar,
         &panel_main,
         NULL
     }

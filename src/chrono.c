@@ -3,6 +3,7 @@
 #include "debug.h"
 #include "macros.h"
 
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -11,6 +12,7 @@
 
 bool chrono_thread_init = false;
 
+#include "native/ui.h"
 static void chrono_thread(void *args) {
     LOG_INFO("Chono", "Thread starting");
 
@@ -19,6 +21,7 @@ static void chrono_thread(void *args) {
     while (info->ptr != info->target) {
         info->ptr += info->step;
         yieldcpu(info->interval_ms);
+        redraw();
     }
     chrono_thread_init = false;
 
@@ -46,7 +49,7 @@ bool chrono_end(CHRONO_INFO *info) {
         return false;
     }
 
-    (*info).finished = true;
+    info->finished = true;
 
     while (chrono_thread_init) { //wait for thread to die
         yieldcpu(1);
