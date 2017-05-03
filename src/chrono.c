@@ -11,6 +11,7 @@
 #include "native/thread.h"
 
 bool chrono_thread_init = false;
+static int thread_count = 0;
 
 #include "native/ui.h"
 static void chrono_thread(void *args) {
@@ -18,16 +19,23 @@ static void chrono_thread(void *args) {
 
     CHRONO_INFO *info = args;
     chrono_thread_init = true;
-    while (info->ptr != info->target) {
-        info->ptr += info->step;
+
+    thread_count++;
+    LOG_ERR("Chrono", "Number of threads: %d", thread_count);
+
+    while (*info->ptr != *info->target) {
+        *info->ptr += info->step;
         yieldcpu(info->interval_ms);
         redraw();
     }
+
     chrono_thread_init = false;
 
     if (info->callback) {
         info->callback(info->cb_data);
     }
+
+    info->finished = true;
 
     LOG_INFO("Chrono", "Thread exited cleanly");
 }
